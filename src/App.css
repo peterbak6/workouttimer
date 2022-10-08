@@ -37,3 +37,14 @@
   font-size: 37px;
   top: -45px;
 }
+
+.Target {
+  width: 125px;
+  font-family: "Avenir Next", "Avenir", "Avenir Next W01", system-ui, sans-serif;
+  font-size: 27px;
+  line-height: 0.9;
+  font-weight: 400;
+  padding: 10px;
+  margin: 10px 0;
+  text-align: center;
+}

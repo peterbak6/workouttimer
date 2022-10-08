@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { useState, useRef } from 'react';
 import bell1 from './bell1.mp3';
@@ -12,14 +11,14 @@ const App = () => {
   const [play2] = useSound(bell2);
 
   const [timer, setTimer] = useState('00:00:00');
-  const [target, setTarget] = useState(10);
+  const [target, setTarget] = useState(60);
   const [remLoops, setRemLoops] = useState(1);
   const [remSec, setRemSec] = useState(10);
   const [timerOn, setTimerOn] = useState(false);
 
   const getNumberWithOrdinal = (n) => {
     var s = ["th", "st", "nd", "rd"],
-        v = n % 100;
+      v = n % 100;
     return "" + (s[(v - 20) % 10] || s[v] || s[0]);
   }
 
@@ -92,13 +91,22 @@ const App = () => {
       {
         remSec === 0 && play2()
       }
+      <label className='Target'>Lap time (sec):<input
+        className='Target'
+        type="number"
+        value={target}
+        onChange={(event) => {
+          setTarget(+event.target.value);
+          onClickStop();
+        }}
+      /></label>
       <h1 className="Timer">{remLoops}
-        <span className='Ordinal'>{getNumberWithOrdinal(remLoops)}  </span> 
+        <span className='Ordinal'>{getNumberWithOrdinal(remLoops)}  </span>
       </h1>
       <h1 className="Timer">{timer}</h1>
       {
         timerOn ? <button className="Button stop" onClick={onClickStop}>Stop</button> :
-        <button className="Button start" onClick={onClickStart}>Start</button>
+          <button className="Button start" onClick={onClickStart}>Start</button>
       }
     </div>
   )
