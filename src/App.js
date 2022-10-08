@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState, useRef, createRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import bell1 from './bell1.mp3';
 import bell2 from './bell2.mp3';
 import useSound from 'use-sound';
@@ -8,7 +8,6 @@ import useSound from 'use-sound';
 const App = () => {
 
   const Ref = useRef(null);
-  // const audioRef1 = createRef();
   const [play1] = useSound(bell1);
   const [play2] = useSound(bell2);
 
@@ -17,20 +16,6 @@ const App = () => {
   const [remLoops, setRemLoops] = useState(1);
   const [remSec, setRemSec] = useState(10);
   const [timerOn, setTimerOn] = useState(false);
-  // const [soundPlayer, setSoundPlayer] = useState(false);
-
-  // useEffect(()=>{
-  //   setSoundPlayer(audioRef1.current);
-  // }, [Ref])
-
-  const playSound = (bell) => {
-    // const audio = new Audio(bell);
-    // audio.play();
-    // SoundPlayer.playSoundFile(bell1, 'mp3')
-    // if (!soundPlayer){ return; }
-    // soundPlayer.play();
-    // useSound(bell1);
-  }
 
   const getNumberWithOrdinal = (n) => {
     var s = ["th", "st", "nd", "rd"],
@@ -58,14 +43,10 @@ const App = () => {
   const startTimer = (e) => {
     let { total, hours, minutes, seconds } = getTimeRemaining(e);
     if (total >= 0) {
-      if (total <= 3000 && total > 0) {
-        playSound(bell1);
-      }
       setTimer(
         showTimer(hours, minutes, seconds)
       )
       if (total === 0) {
-        playSound(bell2);
         setRemLoops(l => l + 1);
         clearTimer(getDeadTime());
       }
@@ -105,7 +86,6 @@ const App = () => {
 
   return (
     <div className="App">
-      {/* <audio src={bell1} ref={audioRef1}/> */}
       {
         remSec <= 3 && remSec > 0 && play1()
       }
