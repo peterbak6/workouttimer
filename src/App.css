@@ -1,0 +1,39 @@
+.App {
+  text-align: center;
+  font-family: "Avenir Next", "Avenir", "Avenir Next W01", system-ui, sans-serif;
+}
+
+.Button {
+  width: 147px;
+  height:147px;
+  border-radius: 50%;
+  border: solid 1px #444;
+  cursor: pointer;
+  margin: 0 10px;
+  font-family: "Avenir Next", "Avenir", "Avenir Next W01", system-ui, sans-serif;
+  font-size: 47px;
+  line-height: 0.9;
+  font-weight: 400;
+  color: #444444;
+}
+
+.Timer {
+  font-size: 91px;
+  line-height: 0.9;
+  font-weight: 200;
+  color: #444444;
+}
+
+.Button.start {
+  background-color: #8dd3c7;
+}
+
+.Button.stop {
+  background-color: #fb8072;
+}
+
+.Ordinal {
+  position: relative;
+  font-size: 37px;
+  top: -45px;
+}
