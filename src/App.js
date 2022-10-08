@@ -1,21 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, createRef, useEffect } from 'react';
 import bell1 from './bell1.mp3';
 import bell2 from './bell2.mp3'
 
 const App = () => {
 
   const Ref = useRef(null);
+  const audioRef1 = createRef();
+
 
   const [timer, setTimer] = useState('00:00:00');
   const [target, setTarget] = useState(10);
   const [remLoops, setRemLoops] = useState(1);
   const [timerOn, setTimerOn] = useState(false);
+  const [soundPlayer, setSoundPlayer] = useState(false);
+
+  useEffect(()=>{
+    setSoundPlayer(audioRef1.current);
+  }, [Ref])
 
   const playSound = (bell) => {
-    const audio = new Audio(bell);
-    audio.play();
+    // const audio = new Audio(bell);
+    // audio.play();
+    // SoundPlayer.playSoundFile(bell1, 'mp3')
+    if (!soundPlayer){ return; }
+    soundPlayer.play();
   }
 
   const getNumberWithOrdinal = (n) => {
@@ -90,6 +100,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <audio src={bell1} ref={audioRef1}/>
       <h1 className="Timer">{remLoops}
         <span className='Ordinal'>{getNumberWithOrdinal(remLoops)}  </span> 
       </h1>
