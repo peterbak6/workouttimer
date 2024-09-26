@@ -1,19 +1,15 @@
 {
   "files": {
-    "main.css": "/workouttimer/static/css/main.212efe34.css",
-    "main.js": "/workouttimer/static/js/main.d3e70d21.js",
-    "static/js/845.30fb7b7c.chunk.js": "/workouttimer/static/js/845.30fb7b7c.chunk.js",
+    "main.css": "/workouttimer/static/css/main.6d93870e.css",
+    "main.js": "/workouttimer/static/js/main.3633e306.js",
     "static/js/787.d5ddf961.chunk.js": "/workouttimer/static/js/787.d5ddf961.chunk.js",
-    "static/media/bell1.mp3": "/workouttimer/static/media/bell1.a416443ef4fc2fc01f6e.mp3",
-    "static/media/bell2.mp3": "/workouttimer/static/media/bell2.46c8de69b3374dc8b23a.mp3",
     "index.html": "/workouttimer/index.html",
-    "main.212efe34.css.map": "/workouttimer/static/css/main.212efe34.css.map",
-    "main.d3e70d21.js.map": "/workouttimer/static/js/main.d3e70d21.js.map",
-    "845.30fb7b7c.chunk.js.map": "/workouttimer/static/js/845.30fb7b7c.chunk.js.map",
+    "main.6d93870e.css.map": "/workouttimer/static/css/main.6d93870e.css.map",
+    "main.3633e306.js.map": "/workouttimer/static/js/main.3633e306.js.map",
     "787.d5ddf961.chunk.js.map": "/workouttimer/static/js/787.d5ddf961.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.212efe34.css",
-    "static/js/main.d3e70d21.js"
+    "static/css/main.6d93870e.css",
+    "static/js/main.3633e306.js"
   ]
 }
