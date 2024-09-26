@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/workouttimer/static/css/main.6d93870e.css",
+    "main.css": "/workouttimer/static/css/main.dd35724a.css",
     "main.js": "/workouttimer/static/js/main.cbb508cc.js",
     "static/js/787.d5ddf961.chunk.js": "/workouttimer/static/js/787.d5ddf961.chunk.js",
     "index.html": "/workouttimer/index.html",
-    "main.6d93870e.css.map": "/workouttimer/static/css/main.6d93870e.css.map",
+    "main.dd35724a.css.map": "/workouttimer/static/css/main.dd35724a.css.map",
     "main.cbb508cc.js.map": "/workouttimer/static/js/main.cbb508cc.js.map",
     "787.d5ddf961.chunk.js.map": "/workouttimer/static/js/787.d5ddf961.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6d93870e.css",
+    "static/css/main.dd35724a.css",
     "static/js/main.cbb508cc.js"
   ]
 }
