@@ -1,115 +1,93 @@
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import React, { useState, useRef } from 'react';
-import bell1 from './bell1.mp3';
-import bell2 from './bell2.mp3';
-import useSound from 'use-sound';
 
-const App = () => {
+function App() {
+  const [seconds, setSeconds] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [previousMinute, setPreviousMinute] = useState(0);
+  const [gongReady, setGongReady] = useState(false);
+  const [audioUnlocked, setAudioUnlocked] = useState(false);
+  const timerRef = useRef(null);
+  const gongSoundRef = useRef(null);
+  const silentAudioRef = useRef(null);
+  const [backgroundColor, setBackgroundColor] = useState('#fafafa');
 
-  const Ref = useRef(null);
-  const [play1] = useSound(bell1);
-  const [play2] = useSound(bell2);
-
-  const [timer, setTimer] = useState('00:00:00');
-  const [target, setTarget] = useState(60);
-  const [remLoops, setRemLoops] = useState(1);
-  const [remSec, setRemSec] = useState(10);
-  const [timerOn, setTimerOn] = useState(false);
-
-  const getNumberWithOrdinal = (n) => {
-    var s = ["th", "st", "nd", "rd"],
-      v = n % 100;
-    return "" + (s[(v - 20) % 10] || s[v] || s[0]);
-  }
-
-  const getTimeRemaining = (e) => {
-    const total = Date.parse(e) - Date.parse(new Date());
-    const seconds = Math.floor((total / 1000) % 60);
-    const minutes = Math.floor((total / 1000 / 60) % 60);
-    const hours = Math.floor((total / 1000 / 60 / 60) % 24);
-    setRemSec(Math.floor(total / 1000));
-    return {
-      total, hours, minutes, seconds
-    };
-  }
-
-  const showTimer = (hours, minutes, seconds) => {
-    return (hours > 9 ? hours : '0' + hours) + ':' +
-      (minutes > 9 ? minutes : '0' + minutes) + ':'
-      + (seconds > 9 ? seconds : '0' + seconds)
-  }
-
-  const startTimer = (e) => {
-    let { total, hours, minutes, seconds } = getTimeRemaining(e);
-    if (total >= 0) {
-      setTimer(
-        showTimer(hours, minutes, seconds)
-      )
-      if (total === 0) {
-        setRemLoops(l => l + 1);
-        clearTimer(getDeadTime());
-      }
+  // Effect for updating the timer every second
+  useEffect(() => {
+    if (isRunning) {
+      timerRef.current = setInterval(() => {
+        setSeconds((prev) => prev + 1);
+      }, 1000);
+    } else if (timerRef.current) {
+      clearInterval(timerRef.current);
     }
-  }
+    return () => clearInterval(timerRef.current); // Cleanup
+  }, [isRunning]);
 
+  useEffect(() => {
+    const minutes = Math.floor(seconds / 60);
+    if (minutes > previousMinute) {
+      playGong(); // Play gong when minute increases
+      setPreviousMinute(minutes);
+    }
+  }, [seconds, previousMinute]);
+
+  // Function to unlock the audio context on iOS using the silent audio clip
+  const unlockAudioContext = () => {
+    if (!audioUnlocked) {
+      silentAudioRef.current.play().then(() => {
+        setAudioUnlocked(true); // Unlock audio context on iOS
+        setGongReady(true); // Now gong sound can play
+        playGong(); // Play gong when timer starts
+      }).catch((error) => console.log('Silent audio playback failed:', error));
+    } else {
+      setGongReady(true); // Gong can play after unlocking
+      playGong(); // Play gong when timer starts
+    }
+  };
+
+  const playGong = () => {
+    if (gongReady && audioUnlocked) {
+      gongSoundRef.current.currentTime = 0;
+      gongSoundRef.current.play().catch((error) => console.log('Gong playback failed:', error));
+    }
+  };
+
+  // Function to handle starting the timer
+  const startTimer = () => {
+    setBackgroundColor('#a6d854'); // Pastel blue for running
+    unlockAudioContext();
+    setIsRunning(true);
+  };
+
+  // Function to handle stopping the timer
   const stopTimer = () => {
-    setTimerOn(false)
-    if (Ref.current) clearInterval(Ref.current);
-    Ref.current = null;
+    setIsRunning(false);
+    setBackgroundColor('#ffd92f'); // Pastel yellow for paused
+    playGong(); // Play gong when pausing
+  };
 
-  }
-
-  const clearTimer = (e) => {
-    setTimerOn(true);
-    if (Ref.current) clearInterval(Ref.current);
-    const id = setInterval(() => {
-      startTimer(e);
-    }, 1000)
-    Ref.current = id;
-  }
-
-  const getDeadTime = () => {
-    let deadline = new Date();
-    deadline.setSeconds(deadline.getSeconds() + target);
-    return deadline;
-  }
-
-  const onClickStart = () => {
-    setRemLoops(1);
-    clearTimer(getDeadTime());
-  }
-
-  const onClickStop = () => {
+  // Function to handle resetting the timer
+  const resetTimer = () => {
     stopTimer();
-  }
+    setSeconds(0);
+    setPreviousMinute(0);
+    setBackgroundColor('#fafafa'); // Pastel green for idle
+  };
 
   return (
-    <div className="App">
-      {
-        remSec <= 3 && remSec > 0 && play1()
-      }
-      {
-        remSec === 0 && play2()
-      }
-      <label className='Target'>Lap time (sec):<input
-        className='Target'
-        type="number"
-        value={target}
-        onChange={(event) => {
-          setTarget(+event.target.value);
-          onClickStop();
-        }}
-      /></label>
-      <h1 className="Timer">{remLoops}
-        <span className='Ordinal'>{getNumberWithOrdinal(remLoops)}  </span>
-      </h1>
-      <h1 className="Timer">{timer}</h1>
-      {
-        timerOn ? <button className="Button stop" onClick={onClickStop}>Stop</button> :
-          <button className="Button start" onClick={onClickStart}>Start</button>
-      }
+    <div className="timer-container" style={{ backgroundColor }} 
+      onClick={() => (isRunning ? stopTimer() : startTimer())} 
+      onDoubleClick={resetTimer}>
+      <h1>{`${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`}</h1>
+
+      {/* Silent audio for iOS audio context unlock */}
+      <audio ref={silentAudioRef} src="/silent.mp3" preload="auto"></audio>
+
+      {/* Gong sound */}
+      <audio ref={gongSoundRef} src="/gong.mp3" preload="auto"></audio>
     </div>
-  )
+  );
 }
 
 export default App;
